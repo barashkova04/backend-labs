@@ -6,6 +6,42 @@ def not_found(err):
     return "нет такой страницы :'(", 404
 
 @app.route("/")
+
+@app.route("/index")
+def index():
+    return '''
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>НГТУ, ФБ, Лабораторные работы</title>
+</head>
+<body>
+    <header>
+        НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных
+    </header>
+
+    <main>
+        <h1>Лабораторные работы по WEB-программированию</h1>
+        
+        <div>
+            <ol>
+                <li>
+                    <a href="/lab1">Лабораторная работа 1</a>
+                </li>
+            </ol>
+        </div>
+    </main>
+
+    <footer>
+        <hr>
+        &copy; Барашкова Светлана, ФБИ-22, 2 курс, 2024
+    </footer>
+</body>
+</html>
+'''
+@app.route("")
+
 @app.route("/lab1/web")
 def web():
     return """<!doctype html> \
