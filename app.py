@@ -36,10 +36,14 @@ def author():
 
 @app.route('/lab1/dub')
 def dub():
-    path = url_for("static", filename="dub.jpeg")
+    path = url_for("static", filename='dub.jpeg')
+    path2 = url_for("static", filename='lab1.css')
     return '''
 <!doctype html>
 <html>
+    <head>
+    <link rel="stylesheet" href="''' + path2 + '''">
+    </head>
     <body>
         <h1>Дуб<h1>
         <img src="''' + path + '''">
