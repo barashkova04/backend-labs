@@ -62,6 +62,21 @@ def counter():
 <html>
     <body>
         Сколько раз вы сюда заходили: '''+ str(count) +'''
+        <a href="/lab1/counter0">очистка</a>
+    </body>
+</html>
+'''
+
+count2 = 0
+@app.route('/lab1/counter0')
+def counter0():
+    global count2
+    count2 += 1
+    return '''
+<!doctype html>
+<html>
+    <body>
+        Сколько раз вы сюда заходили: '''+ str(count2) +'''
     </body>
 </html>
 '''
