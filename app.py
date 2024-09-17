@@ -13,7 +13,10 @@ def web():
            <body> \
                <h1>web-сервер на falsk</h1> \
            <body>\
-        </html>"""
+        </html>""", 200, {
+            'X-Server': 'sample',
+            'Content-Type': 'text/plain; charset=utf-8'
+        }
 
 @app.route("/author")
 def author():
