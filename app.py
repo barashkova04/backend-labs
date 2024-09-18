@@ -14,6 +14,61 @@ def not_found(err):
 </html>
 ''', 404
 
+@app.errorhandler(400)
+def not_found400(err):
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: red">
+        <h1 style="text-align: center;">Некорректный запрос. Будьте внимательнее)<h1>
+    </body>
+</html>
+''', 400
+
+@app.errorhandler(401)
+def not_found401(err):
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: red">
+        <h1 style="text-align: center;">Вы не авторизованы!<h1>
+    </body>
+</html>
+''', 401
+
+@app.errorhandler(403)
+def not_found403(err):
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: red">
+        <h1 style="text-align: center;">Доступ к ресурсу запрещен! >:(<h1>
+    </body>
+</html>
+''', 403
+
+@app.errorhandler(405)
+def not_found405(err):
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: red">
+        <h1 style="text-align: center;">Метод HTTP не разрешен веб-сервером для запрошенного URL-адреса<h1>
+    </body>
+</html>
+''', 405
+
+@app.errorhandler(418)
+def not_found418(err):
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: red">
+        <h1 style="text-align: center;">Время ожидания сервером передачи от клиента истекло<h1>
+    </body>
+</html>
+''', 418
+
 @app.route("/")
 
 @app.route("/index")
