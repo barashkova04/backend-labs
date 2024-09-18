@@ -69,6 +69,17 @@ def not_found418(err):
 </html>
 ''', 418
 
+@app.errorhandler(500)
+def not_found500(err):
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: pink">
+        <h1 style="text-align: center;">Внутренняя ошибка сервера(((<h1>
+    </body>
+</html>
+''', 500
+
 @app.route("/")
 
 @app.route("/index")
@@ -161,6 +172,10 @@ def lab1():
 
             <li>
                 <a href="/lab1/cont">Content Language</a>
+            </li>
+
+            <li>
+                <a href="/lab1/err5">Ошибка 505</a>
             </li>
         </ol>
     </main>
@@ -320,5 +335,19 @@ def cont():
         &copy; Барашкова Светлана, ФБИ-22, 2 курс, 2024
     </footer>
 </body>
+</html>
+'''
+
+a=33
+b=0
+@app.route('/lab1/err5')
+def err5():
+    c = a/b
+    return '''
+<!doctype html>
+<html>
+    <body>
+        Равно: '''+ str(c) +'''
+    </body>
 </html>
 '''
