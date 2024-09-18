@@ -1,0 +1,40 @@
+body {
+    background-color: rgb(241, 206, 212); 
+    color: palevioletred; 
+    font-family: Arial; 
+    margin: 0px;
+}
+
+h1 {
+    text-align: center;
+}
+
+main {
+    margin: 10px 20px 70px;
+}
+
+footer {
+    background-color: rgb(253, 236, 239); 
+    color: rgba(131, 47, 75, 0.878); 
+    padding: 15px; 
+    font-size: 12pt; 
+    font-style: italic; 
+    text-align: right;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+header {
+    background-color: rgb(253, 236, 239); 
+    color: rgba(131, 47, 75, 0.878); 
+    padding: 15px; 
+    font-size: 16pt
+}
+
+a {
+    color: hotpink;
+    text-decoration: none;
+    transition: 1s 1s;
+}
