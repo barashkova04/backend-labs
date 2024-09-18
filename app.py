@@ -39,7 +39,7 @@ def not_found401(err):
 @app.errorhandler(403)
 def not_found403(err):
     return '''
-    <!doctype html>
+<!doctype html>
 <html>
     <body style="background-color: red">
         <h1 style="text-align: center;">Доступ к ресурсу запрещен! >:(<h1>
@@ -195,10 +195,10 @@ def web():
            <body> \
                <h1>web-сервер на falsk</h1> \
            <body>\
-        </html>""", 200, {
-            'X-Server': 'sample',
-            'Content-Type': 'text/plain; charset=utf-8'
-        }
+        </html>""", 201, {
+    'X-Server': 'sample',
+    'Content-Type': 'text/plain; charset=utf-8'
+}
 
 @app.route("/lab1/author")
 def author():
@@ -259,6 +259,7 @@ def counter0():
 <html>
     <body>
         Сколько раз вы сюда заходили: '''+ str(count2) +'''
+        <a href="/lab1">в список</a>
     </body>
 </html>
 '''
