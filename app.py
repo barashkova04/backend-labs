@@ -3,18 +3,29 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def not_found(err):
-    return "нет такой страницы :'(", 404
+    path=url_for("static", filename='err.jpeg')
+    return '''
+    <!doctype html>
+<html>
+    <body style="background-color: red">
+        <h1 style="text-align: center;">ТАКОЙ СТРАНИЦЫ НЕТ!!!<h1>
+        <p style="text-align: center;"><img src="''' + path + '''" width="700" style="padding: 40px;"></p>
+    </body>
+</html>
+''', 404
 
 @app.route("/")
 
 @app.route("/index")
 def index():
+    path = url_for("static", filename='lab1.css')
     return '''
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>НГТУ, ФБ, Лабораторные работы</title>
+    <link rel="stylesheet" href="''' + path + '''">
 </head>
 <body>
     <header>
@@ -42,12 +53,14 @@ def index():
 '''
 @app.route("/lab1")
 def lab1():
+    path = url_for("static", filename='lab1.css')
     return '''
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Лабораторная 1</title>
+    <link rel="stylesheet" href="''' + path + '''">
 </head>
 <body>
     <header>
@@ -63,7 +76,7 @@ def lab1():
             веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
         </p>
 
-        <a href="/">ссылка на корень</a>
+        <a href="/">ссылка на меню</a>
     </main>
 
     <footer>
