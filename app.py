@@ -1,4 +1,4 @@
-from flask import Flask, url_for, redirect
+from flask import Flask, url_for, redirect, jsonify, abort
 app = Flask(__name__)
 
 @app.errorhandler(404)
@@ -372,20 +372,63 @@ def flowers(flower_id):
     else:
         return "цветок:" + flower_list[flower_id]
 
-@app.route ('/lab2/add_flower/<name>')
-def add_flower(name):
-    flower_list.append (name)
+@app.route('/lab2/add_flower/<name>')
+def add_flower(name=None):
+    if name is None:
+        abort(400, description="Вы не задали имя цветка")
+    
+    flower_list.append(name)
     return f'''
 <!doctype html>
 <html>
     <body>
     <h1>Добавлен новый цветок</h1>
-    <p>Название прексраного цветка: {name} </p>
-    <p>Всего цветов: {len(flower_list)} </p>
-    <p>Полный список: {flower_list} </p>
+    <p>Название прекрасного цветка: {name}</p>
+    <p>Всего цветов: {len(flower_list)}</p>
+    <p>Полный список: {flower_list}</p>
+    <a href="{url_for('list_flowers')}">Посмотреть все цветы</a>
     </body>
 </html>
 '''
+
+@app.route('/lab2/flowers/')
+def list_flowers():
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Список всех цветов</h1>
+    <p>Всего цветов: {len(flower_list)}</p>
+    <ul>
+        {''.join(f'<li>{flower}</li>' for flower in flower_list)}
+    </ul>
+    <a href="{url_for('clear_flowers')}">Очистить список цветов</a>
+    </body>
+</html>
+'''
+
+@app.route('/lab2/flowers/<int:flower_id>')
+def flower_detail(flower_id):
+    if flower_id < 0 or flower_id >= len(flower_list):
+        abort(404)
+    
+    flower_name = flower_list[flower_id]
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Цветок #{flower_id + 1}</h1>
+    <p>Название цветка: {flower_name}</p>
+    <a href="{url_for('list_flowers')}">Вернуться к списку всех цветов</a>
+    </body>
+</html>
+'''
+
+@app.route('/lab2/clear_flowers/')
+def clear_flowers():
+    flower_list.clear()
+    return redirect(url_for('list_flowers'))
+
 
 @app.route('/lab2/example')
 def example():
@@ -410,3 +453,4 @@ def lab2():
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
     return render_template('filter.html', phrase = phrase)
+
