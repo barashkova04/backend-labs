@@ -454,3 +454,41 @@ def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
     return render_template('filter.html', phrase = phrase)
 
+#2 задание
+@app.route('/lab2/calc/<int:a>/<int:b>', methods=['GET'])
+def calculate(a, b):
+    results = {
+        'sum': a + b,
+        'difference': a - b,
+        'product': a * b,
+        'quotient': a / b if b != 0 else 'undefined',
+        'power': a ** b }
+    
+    return f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Результаты вычислений</title>
+    </head>
+    <body>
+        <h1>Результаты для {a} и {b}</h1>
+        <pre>
+            {a} + {b} = {results['sum']}
+            {a} - {b} = {results['difference']}
+            {a} * {b} = {results['product']}
+            {a} / {b} = {results['quotient']}
+            {a} ** {b} = {results['power']}
+        </pre>
+    </body>
+    </html>
+    """
+
+@app.route('/lab2/calc/')
+def default_calc():
+    return redirect(url_for('calculate', a=1, b=1))
+
+@app.route('/lab2/calc/<int:a>')
+def redirect_a(a):
+    return redirect(url_for('calculate', a=a, b=1))
