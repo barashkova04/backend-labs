@@ -25,7 +25,7 @@ def add_flower(name=None):
     if name is None:
         abort(400, description="Вы не задали имя цветка")
     
-    flower_list.lab2end(name)
+    flower_list.append(name)
     return f'''
 <!doctype html>
 <html>
@@ -34,7 +34,7 @@ def add_flower(name=None):
     <p>Название прекрасного цветка: {name}</p>
     <p>Всего цветов: {len(flower_list)}</p>
     <p>Полный список: {flower_list}</p>
-    <a href="{url_for('list_flowers')}">Посмотреть все цветы</a>
+    <a href="{url_for('lab2.list_flowers')}">Посмотреть все цветы</a>
     </body>
 </html>
 '''
@@ -51,7 +51,7 @@ def list_flowers():
     <ul>
         {''.join(f'<li>{flower}</li>' for flower in flower_list)}
     </ul>
-    <a href="{url_for('clear_flowers')}">Очистить список цветов</a>
+    <a href="{url_for('lab2.clear_flowers')}">Очистить список цветов</a>
     </body>
 </html>
 '''
@@ -69,7 +69,7 @@ def flower_detail(flower_id):
     <body>
     <h1>Цветок #{flower_id + 1}</h1>
     <p>Название цветка: {flower_name}</p>
-    <a href="{url_for('list_flowers')}">Вернуться к списку всех цветов</a>
+    <a href="{url_for('lab2.list_flowers')}">Вернуться к списку всех цветов</a>
     </body>
 </html>
 '''
@@ -78,7 +78,7 @@ def flower_detail(flower_id):
 @lab2.route('/lab2/clear_flowers/')
 def clear_flowers():
     flower_list.clear()
-    return redirect(url_for('list_flowers'))
+    return redirect(url_for('lab2.list_flowers'))
 
 
 @lab2.route('/lab2/example')
@@ -94,18 +94,18 @@ def example():
         {'name': 'мандарины', 'price': 95},
         {'name': 'манго', 'price': 321},
     ]
-    return render_template('example.html', name=name, num_lab=num_lab, clas=clas, group=gr, fruits=fruits)
+    return render_template('lab2/example.html', name=name, num_lab=num_lab, clas=clas, group=gr, fruits=fruits)
 
 
 @lab2.route('/lab2/')
 def lab():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 
 @lab2.route('/lab2/filters')
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
-    return render_template('filter.html', phrase = phrase)
+    return render_template('lab2/filter.html', phrase = phrase)
 
 
 #2 задание
@@ -152,7 +152,7 @@ def redirect_a(a):
 
 @lab2.route('/lab2/book')
 def book():
-    return render_template('book.html')
+    return render_template('lab2/book.html')
 
 
 # Данные о ягодах
@@ -160,33 +160,33 @@ berries = [
     {
         "name": "Клубника",
         "description": "Сочная и сладкая ягода, популярная в летний сезон.",
-        "image": "static\images\strawberry.jpeg"
+        "image": "lab2/strawberry.jpeg"
     },
     {
         "name": "Черника",
         "description": "Полезная ягода с множеством антиоксидантов.",
-        "image": "static\images\blueberry.jpeg"
+        "image": "lab2/blueberry.jpeg"
     },
     {
         "name": "Малина",
         "description": "Ароматная ягода, часто используется в десертах.",
-        "image": "static\images\raspberry.jpeg"
+        "image": "lab2/raspberry.jpeg"
     },
     {
         "name": "Ежевика",
         "description": "Темная, сочная и насыщенная по вкусу ягода.",
-        "image": "static\images\blackberry.jpeg"
+        "image": "lab2/blackberry.jpeg"
     },
     {
         "name": "Клюква",
         "description": "Кислая ягода, известная своими лечебными свойствами.",
-        "image": "static\images\cherry.jpeg"
+        "image": "lab2/cherry.jpeg"
     }
 ]
 
 @lab2.route('/lab2/berry')
 def show_berries():
-    return render_template('index.html', items=berries)
+    return render_template('lab2/index.html', items=berries)
 
 if __name__ == '__main__':
     lab2.run(debug=True)
