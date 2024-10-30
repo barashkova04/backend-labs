@@ -10,7 +10,7 @@ app.register_blueprint(lab3)
 
 @app.errorhandler(404)
 def not_found(err):
-    path=url_for("static", filename='err.jpeg')
+    path=url_for("static", filename='lab1/err.jpeg')
     return '''
     <!doctype html>
 <html>
