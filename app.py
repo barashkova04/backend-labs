@@ -109,6 +109,10 @@ def index():
                 <li>
                     <a href="/lab1">Лабораторная работа 1</a>
                 </li>
+
+                <li>
+                    <a href="/lab2">Лабораторная работа 2</a>
+                </li>
             </ol>
         </div>
     </main>
@@ -492,3 +496,43 @@ def default_calc():
 @app.route('/lab2/calc/<int:a>')
 def redirect_a(a):
     return redirect(url_for('calculate', a=a, b=1))
+
+@app.route('/lab2/book')
+def book():
+    return render_template('book.html')
+
+# Данные о ягодах
+berries = [
+    {
+        "name": "Клубника",
+        "description": "Сочная и сладкая ягода, популярная в летний сезон.",
+        "image": "static\images\strawberry.jpeg"
+    },
+    {
+        "name": "Черника",
+        "description": "Полезная ягода с множеством антиоксидантов.",
+        "image": "static\images\blueberry.jpeg"
+    },
+    {
+        "name": "Малина",
+        "description": "Ароматная ягода, часто используется в десертах.",
+        "image": "static\images\raspberry.jpeg"
+    },
+    {
+        "name": "Ежевика",
+        "description": "Темная, сочная и насыщенная по вкусу ягода.",
+        "image": "static\images\blackberry.jpeg"
+    },
+    {
+        "name": "Клюква",
+        "description": "Кислая ягода, известная своими лечебными свойствами.",
+        "image": "static\images\cherry.jpeg"
+    }
+]
+
+@app.route('/lab2/berry')
+def show_berries():
+    return render_template('index.html', items=berries)
+
+if __name__ == '__main__':
+    app.run(debug=True)
