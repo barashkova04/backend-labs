@@ -66,6 +66,7 @@ def success():
     price = request.args.get('price', '0')  # Значение по умолчанию — '0'
     return render_template('lab3/success.html', price=price)
     
+
 @lab3.route('/lab3/settings')
 def settings():
     # Получаем параметры из запроса
@@ -97,6 +98,18 @@ def settings():
     resp = make_response(render_template('lab3/settings.html', color=color, bg_color=bg_color, font_size=font_size, font_style=font_style))
     return resp
 
+@lab3.route('/lab3/clear_settings')
+def clear_settings():
+    # Создаем ответ для перенаправления на /lab3/settings
+    resp = make_response(redirect('/lab3/settings'))
+    
+    # Удаляем куки путем их переустановки с пустыми значениями и с истекшим сроком действия
+    resp.set_cookie('color', '', expires=0)
+    resp.set_cookie('bg_color', '', expires=0)
+    resp.set_cookie('font_size', '', expires=0)
+    resp.set_cookie('font_style', '', expires=0)
+    
+    return resp
 
 
 @lab3.route('/lab3/ticket', methods=['GET', 'POST'])
