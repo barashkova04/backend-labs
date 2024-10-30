@@ -105,8 +105,8 @@ def author():
 
 @lab1.route('/lab1/dub')
 def dub():
-    path = url_for("static", filename='dub.jpeg')
-    path2 = url_for("static", filename='lab1.css')
+    path = url_for("static", filename='lab1/dub.jpeg')
+    path2 = url_for("static", filename='main.css')
     return '''
 <!doctype html>
 <html>
