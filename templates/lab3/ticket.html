@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+    <h1>Железнодорожный билет</h1>
+    
+    {% if error_message %}
+        <div style="color: red;">{{ error_message }}</div>
+    {% endif %}
+    
+    <form method="post" action="{{ url_for('lab3.ticket') }}">
+        <label>ФИО пассажира: <input type="text" name="passenger_name" required></label><br>
+        <label>Полка:
+            <select name="seat_type" required>
+                <option value="нижняя">нижняя</option>
+                <option value="верхняя">верхняя</option>
+                <option value="нижняя боковая">нижняя боковая</option>
+                <option value="верхняя боковая">верхняя боковая</option>
+            </select>
+        </label><br>
+        <label>С бельём: <input type="checkbox" name="with_bedding"></label><br>
+        <label>С багажом: <input type="checkbox" name="with_luggage"></label><br>
+        <label>Возраст: <input type="number" name="age" required></label><br>
+        <label>Пункт выезда: <input type="text" name="departure_point" required></label><br>
+        <label>Пункт назначения: <input type="text" name="destination_point" required></label><br>
+        <label>Дата поездки: <input type="date" name="travel_date" required></label><br>
+        <label>Нужна страховка: <input type="checkbox" name="insurance"></label><br>
+        <button type="submit">Оформить билет</button>
+    </form>
+{% endblock %}
