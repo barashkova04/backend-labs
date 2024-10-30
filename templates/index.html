@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список ягод</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Список ягод</h1>
+    <div class="container">
+        {% for item in items %}
+        <div class="item">
+            <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+            <h2>{{ item.name }}</h2>
+            <p>{{ item.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
