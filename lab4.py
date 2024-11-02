@@ -11,6 +11,7 @@ def lab():
 def div_form():
     return render_template('lab4/div-form.html')
 
+
 @lab4.route('/lab4/div', methods = ['POST'])
 def div():
     x1 = request.form.get('x1')
@@ -25,3 +26,15 @@ def div():
     result = x1 / x2
     return render_template('lab4/div.html', x1=x1, x2=x2, result=result)
     
+
+# Страница суммирования
+@lab4.route('/lab4/add-form')
+def add_form():
+    return render_template('lab4/add-form.html')
+
+@lab4.route('/lab4/add', methods=['POST'])
+def add():
+    x1 = request.form.get('x1') or 0
+    x2 = request.form.get('x2') or 0
+    result = int(x1) + int(x2)
+    return render_template('lab4/add.html', x1=x1, x2=x2, result=result)
