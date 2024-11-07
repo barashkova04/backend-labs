@@ -110,6 +110,32 @@ users = [
 ]
 
 
+@lab4.route('/lab4/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        name = request.form.get('name')
+        gender = request.form.get('gender')
+
+        # Проверка заполнения
+        if not login or not password or not name:
+            error = "Все поля обязательны."
+            return render_template("lab4/register.html", error=error)
+
+        # Проверка на уникальность логина
+        if any(user['login'] == login for user in users):
+            error = "Пользователь с таким логином уже существует."
+            return render_template("lab4/register.html", error=error)
+
+        # Добавление нового пользователя
+        new_user = {'login': login, 'password': password, 'name': name, 'gender': gender}
+        users.append(new_user)
+        return redirect('/lab4/login')
+    
+    return render_template("lab4/register.html")
+
+
 @lab4.route('/lab4/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -144,6 +170,44 @@ def login():
     # Обработка неверных данных авторизации
     error = 'Неверные логин и/или пароль'
     return render_template('lab4/login.html', error=error, authorized=False, login=login)
+
+
+@lab4.route('/lab4/users')
+def users_list():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+    return render_template("lab4/users.html", users=users, current_user=session['login'])
+
+
+@lab4.route('/lab4/users/delete', methods=['POST'])
+def delete_user():
+    if 'login' in session:
+        user_login = session['login']
+        global users
+        users = [user for user in users if user['login'] != user_login]
+        session.pop('login', None)
+    return redirect('/lab4/login')
+
+@lab4.route('/lab4/users/edit', methods=['GET', 'POST'])
+def edit_user():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    user_login = session['login']
+    user = next((user for user in users if user['login'] == user_login), None)
+
+    if request.method == 'POST':
+        new_name = request.form.get('name')
+        new_password = request.form.get('password')
+        
+        if new_name:
+            user['name'] = new_name
+        if new_password:
+            user['password'] = new_password
+
+        return redirect('/lab4/users')
+
+    return render_template("lab4/edit_user.html", user=user)
 
 
 @lab4.route('/lab4/logout', methods=['POST'])
