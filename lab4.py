@@ -188,3 +188,63 @@ def fridge():
         return render_template("lab4/fridge.html", message=message)
 
     return render_template("lab4/fridge.html")
+
+
+# Цены на зерно
+GRAIN_PRICES = {
+    "ячмень": 12345,
+    "овёс": 8522,
+    "пшеница": 8722,
+    "рожь": 14111
+}
+
+@lab4.route('/lab4/grain_order', methods=['GET', 'POST'])
+def grain_order():
+    message = ""
+    
+    if request.method == 'POST':
+        grain_type = request.form.get('grain_type')
+        weight = request.form.get('weight')
+        
+        # Проверка на пустой вес
+        if weight is None or weight.strip() == '':
+            message = "Ошибка: вес не указан."
+            return render_template("lab4/grain_order.html", message=message)
+        
+        try:
+            # Преобразуем вес в число
+            weight = float(weight)
+        except ValueError:
+            message = "Ошибка: вес должен быть числом."
+            return render_template("lab4/grain_order.html", message=message)
+        
+        # Проверка валидности веса
+        if weight <= 0:
+            message = "Ошибка: вес должен быть больше 0."
+            return render_template("lab4/grain_order.html", message=message)
+        elif weight > 500:
+            message = "Ошибка: такого объёма зерна сейчас нет в наличии."
+            return render_template("lab4/grain_order.html", message=message)
+        
+        # Рассчитываем базовую стоимость заказа
+        price_per_ton = GRAIN_PRICES.get(grain_type, 0)
+        total_cost = weight * price_per_ton
+        discount = 0
+        
+        # Применяем скидку за большой объём
+        if weight > 50:
+            discount = 0.10  # 10% скидка
+            total_cost *= (1 - discount)
+            discount_message = f"Применена скидка за большой объём: {int(discount * 100)}%"
+        else:
+            discount_message = ""
+        
+        # Формируем итоговое сообщение
+        message = (
+            f"Заказ успешно сформирован. Вы заказали {grain_type}."
+            f" Вес: {weight} т. Сумма к оплате: {total_cost:.2f} руб."
+        )
+        
+        return render_template("lab4/grain_order.html", message=message, discount_message=discount_message)
+
+    return render_template("lab4/grain_order.html")
