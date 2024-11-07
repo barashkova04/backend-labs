@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4 - Заказ зерна{% endblock %}
+
+{% block main %}
+    <h1>Оформление заказа на зерно</h1>
+    <form method="post">
+        <div>
+            <label for="grain_type">Тип зерна:</label>
+            <select id="grain_type" name="grain_type" required>
+                <option value="ячмень">Ячмень</option>
+                <option value="овёс">Овёс</option>
+                <option value="пшеница">Пшеница</option>
+                <option value="рожь">Рожь</option>
+            </select>
+        </div>
+        <div>
+            <label for="weight">Вес (т):</label>
+            <input type="text" id="weight" name="weight" placeholder="Введите вес в тоннах" required>
+        </div>
+        <div>
+            <button type="submit">Оформить заказ</button>
+        </div>
+        <p><a href="/lab4/">В список</a></p>
+    </form>
+
+    {% if message %}
+        <div style="margin-top: 20px; color: blue; font-weight: bold;">
+            {{ message }}
+        </div>
+        {% if discount_message %}
+            <div style="color: green; font-weight: bold;">
+                {{ discount_message }}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
