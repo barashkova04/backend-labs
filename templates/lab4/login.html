@@ -10,6 +10,7 @@
                 <button>Выход</button>
             </form>
         </div>
+        <p><a href="/lab4/users">Просмотреть список пользователей</a></p>
     {% else %}
         <h1>Вход</h1>
         <h2>Пожалуйста, авторизуйтесь</h2>
@@ -29,7 +30,9 @@
                 <button type="submit">Войти</button>
                 <button type="reset">Отмена</button>
             </div>
-            <p><a href="/lab4/">В список</a></p>
+        </form>
+        <form action="/lab4/register" method="post">
+            <button>Зарегистрироваться</button>
         </form>
     {% endif %}
 {% endblock %}
