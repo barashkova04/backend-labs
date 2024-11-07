@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, jsonify, abort, render_template
+from flask import Blueprint, url_for, redirect, abort, render_template
 lab2 = Blueprint('lab2', __name__)
 
 @lab2.route('/lab2/a')
@@ -142,12 +142,12 @@ def calculate(a, b):
 
 @lab2.route('/lab2/calc/')
 def default_calc():
-    return redirect(url_for('calculate', a=1, b=1))
+    return redirect(url_for('lab2.calculate', a=1, b=1))
 
 
 @lab2.route('/lab2/calc/<int:a>')
 def redirect_a(a):
-    return redirect(url_for('calculate', a=a, b=1))
+    return redirect(url_for('lab2.calculate', a=a, b=1))
 
 
 @lab2.route('/lab2/book')
