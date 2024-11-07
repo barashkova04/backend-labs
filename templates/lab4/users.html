@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Список пользователей</h1>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.name }} ({{ user.login }})</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Ваш профиль</h2>
+    <form action="/lab4/users/delete" method="post" style="display: inline;">
+        <button type="submit">Удалить профиль</button>
+    </form>
+    <form action="/lab4/users/edit" method="get" style="display: inline;">
+        <button type="submit">Редактировать профиль</button>
+    </form>
+    <p><a href="/lab4/">В список</a></p>
+{% endblock %}
