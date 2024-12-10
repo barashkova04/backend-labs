@@ -14,8 +14,8 @@ main {
 }
 
 footer {
-    background-color: rgb(253, 236, 239); 
-    color: rgba(131, 47, 75, 0.878); 
+    background-color: rgb(255, 255, 255); 
+    color: rgba(249, 129, 169, 0.878); 
     padding: 15px; 
     font-size: 12pt; 
     font-style: italic; 
@@ -37,4 +37,29 @@ a {
     color: hotpink;
     text-decoration: none;
     transition: 1s 1s;
+}
+
+/* Стили для кнопок */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ec4392; /* Белый текст */
+    background-color: #ffeff9; /* Синий фон */
+    border: none;
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Плавный переход при наведении */
+}
+
+.btn:hover {
+    background-color: #f1abd7; /* Темно-синий фон при наведении */
+}
+
+.btn:active {
+    background-color: #f259ce; /* Еще темнее при нажатии */
 }
