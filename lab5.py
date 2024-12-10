@@ -52,7 +52,7 @@ def register():
         return render_template('lab5/register.html', error="Такой пользователь уже существует")
     
     password_hash=generate_password_hash(password)
-    cur.execute(f"INSERT INTO users (login, password) VALUES (%s, %s);", (login, password_hash))
+    cur.execute(f"INSERT INTO users (login, password) VALUES (?, ?);", (login, password_hash))
     
 
     db_close(conn, cur)
@@ -71,7 +71,7 @@ def login():
     
     conn, cur = db_connect()
 
-    cur.execute("SELECT * FROM users WHERE login=%s;", (login, ))
+    cur.execute("SELECT * FROM users WHERE login=?;", (login, ))
     user=cur.fetchone()
 
     if not user:
@@ -100,7 +100,7 @@ def create():
 
     conn, cur = db_connect()
 
-    cur.execute("SELECT * FROM users WHERE login=%s;", (login, ))
+    cur.execute("SELECT * FROM users WHERE login=?;", (login, ))
     user_id = cur.fetchone()["id"]
 
     cur.execute(f"INSERT INTO articles(user_id, title, article_text) VALUES ({user_id}, '{title}', '{article_text}');")
