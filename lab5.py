@@ -6,12 +6,7 @@ lab5 = Blueprint('lab5', __name__)
 def lab():
     return render_template('lab5/lab5.html')
 
-@lab5.route('/login')
-def login():
-    # Маршрут для входа
-    return render_template()
-
-@lab5.route('/lab5/register', methods = ['POST'])
+@lab5.route('/lab5/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('lab5/register.html')
@@ -41,6 +36,37 @@ def register():
     conn.close()
     return render_template('lab5/success.html', login=login)
 
+@lab5.route('lab5/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('lab5/login.html')
+    
+    login = request.form.get('login')
+    password = request.form.get('password')
+
+    if not (login or password):
+        return render_template('lab/login.html', error="заполните все поля")
+    
+    conn = psycopg2.connect(
+        host = '127.0.0.1',
+        database = 'svetlana_barashkova_knowledge_base',
+        user = 'svetlana_barashkova_knowledge_base',
+        password = '123'
+    )
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT * FROM users WHERE login='{login}';")
+    user=cur.fetchone()
+
+    if not user:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html', error='Логин и\или пароль неверны')
+    
+    if not user[2] != password:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html', error='Логин и\или пароль неверны')
 
 @lab5.route('/list')
 def list_articles():
