@@ -3,7 +3,7 @@ lab6 = Blueprint('lab6', __name__)
 
 offices = []
 for i in range(1, 11):
-    offices.append({"number": i, "tenant": ""})
+    offices.append({"number": i, "tenant": "", "price": 900 + i%3})
 
 @lab6.route('/lab6/')
 def lab():
@@ -52,6 +52,36 @@ def api():
                     'id': id
                 }
 
+    if data['method'] == 'cancellation':
+        office_number = data['params']
+        for office in offices:
+            if office['number'] == office_number:
+                if office['tenant'] == '':
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 3,
+                            'message': 'Office is not booked'
+                        },
+                        'id': id
+                    }
+                if office['tenant'] != login:
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 4,
+                            'message': 'You cannot cancel someone else\'s booking'
+                        },
+                        'id': id
+                    }
+                
+                office['tenant'] = ''  # Освобождаем офис
+                return {
+                    'jsonrpc': '2.0',
+                    'result': 'success',
+                    'id': id
+                }
+
     return {
         'jsonrpc': '2.0',
         'error': {
@@ -61,3 +91,7 @@ def api():
         'id': id
     }
 
+@lab6.route('/lab6/logout')
+def logout():
+    session.pop('login', None)
+    return redirect('/lab6/')
