@@ -4,6 +4,10 @@
 
 {% block main %}
     <h1>Создание статьи</h1>
+
+    {% if error %}
+        <p style="color: rgb(244, 36, 115);">{{ error }}</p>
+    {% endif %}
     
     <form method="post">
         <div>
