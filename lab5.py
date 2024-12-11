@@ -97,17 +97,23 @@ def login():
     db_close(conn, cur)
     return render_template('lab5/success_login.html', login=login)
 
-@lab5.route('/lab5/create', methods= ['GET', 'POST'])
+
+@lab5.route('/lab5/create', methods=['GET', 'POST'])
 def create():
-    login=session.get('login')
+    login = session.get('login')
     if not login:
         return redirect('/lab5/login')
-    
+
     if request.method == 'GET':
         return render_template('lab5/create_article.html')
-    
+
     title = request.form.get('title')
     article_text = request.form.get('article_text')
+
+    # Валидация на пустые поля
+    if not title or not article_text:
+        error = "Название статьи и текст статьи не могут быть пустыми."
+        return render_template('lab5/create_article.html', error=error)
 
     conn, cur = db_connect()
 
@@ -130,20 +136,140 @@ def list():
     login = session.get('login')
     if not login:
         return redirect('/lab5/login')
-    
+
     conn, cur = db_connect()
 
+    # Получение ID текущего пользователя
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT id FROM users WHERE login=%s;", (login, ))
+        cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
     else:
-        cur.execute("SELECT id FROM users WHERE login=?;", (login, ))
+        cur.execute("SELECT id FROM users WHERE login=?;", (login,))
     user_id = cur.fetchone()["id"]
 
+    # Получение статей, отсортированных по is_favorite
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT * FROM articles WHERE user_id=%s;", (user_id, ))
+        cur.execute(
+            "SELECT * FROM articles WHERE user_id=%s ORDER BY is_favorite DESC;",
+            (user_id,)
+        )
     else:
-        cur.execute("SELECT * FROM articles WHERE user_id=?;", (user_id, ))
+        cur.execute(
+            "SELECT * FROM articles WHERE user_id=? ORDER BY is_favorite DESC;",
+            (user_id,)
+        )
     articles = cur.fetchall()
 
     db_close(conn, cur)
-    return render_template('/lab5/articles.html', articles=articles)
+    
+    # Сообщение, если нет статей
+    if not articles:
+        message = "У вас еще нет ни одной статьи."
+    else:
+        message = None
+
+    return render_template('/lab5/articles.html', articles=articles, message=message)
+
+@lab5.route('/lab5/logout')
+def logout():
+    session.pop('login', None)
+    return redirect('/lab5')
+
+@lab5.route('/lab5/edit/<int:article_id>', methods=['GET', 'POST'])
+def edit_article(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    if request.method == 'GET':
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM articles WHERE id=%s;", (article_id, ))
+        else:
+            cur.execute("SELECT * FROM articles WHERE id=?;", (article_id, ))
+        article = cur.fetchone()
+        db_close(conn, cur)
+
+        if not article:
+            return "Статья не найдена", 404
+
+        return render_template('lab5/edit_article.html', article=article)
+
+    # POST method
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+
+    # Валидация
+    if not title or not article_text:
+        error = "Название статьи и текст статьи не могут быть пустыми."
+        return render_template('lab5/edit_article.html', article={'id': article_id, 'title': title, 'article_text': article_text}, error=error)
+
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("UPDATE articles SET title=%s, article_text=%s WHERE id=%s;", (title, article_text, article_id))
+    else:
+        cur.execute("UPDATE articles SET title=?, article_text=? WHERE id=?;", (title, article_text, article_id))
+
+    db_close(conn, cur)
+    return redirect('/lab5/list')
+
+@lab5.route('/lab5/delete/<int:article_id>', methods=['POST'])
+def delete_article(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("DELETE FROM articles WHERE id=%s;", (article_id, ))
+    else:
+        cur.execute("DELETE FROM articles WHERE id=?;", (article_id, ))
+
+    db_close(conn, cur)
+    return redirect('/lab5/list')
+
+@lab5.route('/lab5/users')
+def users():
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    # Получение всех пользователей
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT login FROM users;")
+    else:
+        cur.execute("SELECT login FROM users;")
+
+    users = cur.fetchall()
+
+    db_close(conn, cur)
+    return render_template('/lab5/users.html', users=users)
+
+@lab5.route('/lab5/favorite/<int:article_id>', methods=['POST'])
+def toggle_favorite(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    # Получение текущего статуса is_favorite
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT is_favorite FROM articles WHERE id=%s;", (article_id,))
+    else:
+        cur.execute("SELECT is_favorite FROM articles WHERE id=?;", (article_id,))
+    current_status = cur.fetchone()["is_favorite"]
+
+    # Переключение статуса
+    new_status = not current_status
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("UPDATE articles SET is_favorite=%s WHERE id=%s;", (new_status, article_id))
+    else:
+        cur.execute("UPDATE articles SET is_favorite=? WHERE id=?;", (new_status, article_id))
+
+    db_close(conn, cur)
+    return redirect('/lab5/list')
+
+
