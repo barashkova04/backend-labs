@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session, abort
-
+from flask import Blueprint, render_template, request, redirect, session, abort, jsonify
 lab7 = Blueprint('lab7', __name__)
 
 @lab7.route('/lab7/')
@@ -94,8 +93,10 @@ def put_film(id):
      if id < 0 or id >= len(films):
         abort(404)
         film = request.get_json()
+        if not film:
+            return jsonify({"error": "Invalid data"}), 400  # Возвращаем ошибку, если данные не валидны
         films[id] = film
-        return films[id]
+        return jsonify(films[id]), 200  # Возвращаем обновленный фильм
      
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
