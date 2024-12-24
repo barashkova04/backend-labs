@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{# Номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{# Основной контент: #}
+{% block main %}
+    <h1>База знаний</h1>
+    <div>Список доступных страниц:</div>
+    <div style="margin-top: 20px;">
+        <a href="/lab8/list" class="btn">Список статей</a>
+        <a href="/lab8/create" class="btn">Создать статью</a>
+        <a href="/lab8/login" class="btn">Войти</a>
+        <a href="/lab8/register" class="btn">Регистрация</a>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <span>Имя пользователя: <strong>{{ session['login'] if session['login'] else 'Anonymous' }}</strong></span>
+    </div>
+{% endblock %}
