@@ -99,16 +99,7 @@ def put_film(id):
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
     film = request.get_json()
-    
-    # Validation checks
-    if not film.get('title') and not film.get('title_ru'):
-        return {'error': 'Название (оригинальное или русское) должно быть непустым.'}, 400
-    if not film.get('title_ru'):
-        return {'error': 'Русское название должно быть непустым.'}, 400
-    if 'year' not in film or not (1895 <= film['year'] <= 2023):
-        return {'error': 'Год должен быть от 1895 до текущего.'}, 400
-    if 'description' not in film or not film['description'] or len(film['description']) > 2000:
-        return {'error': 'Описание должно быть непустым и не более 2000 символов.'}, 400
-    
-    films.append(film)
-    return jsonify({'id': len(films) - 1}), 201
+    if film['description'] == '':
+        return {'description' : 'Заполните описание'}, 400
+    films[id] = film
+    return films[id]
