@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1>Список статей</h1>
+
+{% if articles %}
+    <ul>
+        {% for article in articles %}
+            <li>
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.article_text }}</p>
+                <p><strong>Автор:</strong> {{ article.user.login }}</p>
+                <p><strong>Лайки:</strong> {{ article.likes }}</p>
+                <p>
+                    <a href="/lab8/edit/{{ article.id }}" class="btn btn-secondary">Редактировать</a>
+                    <form action="/lab8/delete/{{ article.id }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Нет доступных статей.</p>
+{% endif %}
+
+<a href="/lab8/create" class="btn btn-primary">Создать новую статью</a>
+<a href="/lab8" class="btn btn-primary">На главную</a>
+{% endblock %}

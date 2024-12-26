@@ -8,13 +8,14 @@
     <h1>База знаний</h1>
     <div>Список доступных страниц:</div>
     <div style="margin-top: 20px;">
-        <a href="/lab8/list" class="btn">Список статей</a>
+        <a href="/lab8/articles" class="btn">Список статей</a>
         <a href="/lab8/create" class="btn">Создать статью</a>
         <a href="/lab8/login" class="btn">Войти</a>
         <a href="/lab8/register" class="btn">Регистрация</a>
+        <a href="/lab8/logout" class="btn">Выход</a>
     </div>
 
     <div style="margin-top: 20px;">
-        <span>Имя пользователя: <strong>{{ session['login'] if session['login'] else 'Anonymous' }}</strong></span>
+        <span>Имя пользователя: <strong>{{ current_user.login if current_user.is_authenticated else 'Anonymous' }}</strong></span>
     </div>
 {% endblock %}
